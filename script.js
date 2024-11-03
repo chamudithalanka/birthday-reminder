@@ -392,50 +392,62 @@ class BirthdayReminder {
     }
 
     showSendMessageModal(name, phone) {
-        // Remove any existing modal first
         this.closeModal();
 
-        // Create modal container
         const modalContainer = document.createElement('div');
         modalContainer.className = 'message-modal';
         
-        // Create modal content with simplified structure
         const modalContent = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>Send Wish to ${name}</h3>
+                    <h3>Send Birthday Wish to ${name}</h3>
                     <button class="close-btn" onclick="birthdayReminder.closeModal()">×</button>
                 </div>
                 
                 <div class="modal-body">
                     <div class="template-selector">
                         <select id="messageTemplate" onchange="birthdayReminder.updateTemplate('${name}')">
-                            <option value="default">Default Template</option>
-                            <option value="formal">Formal Template</option>
-                            <option value="friendly">Friendly Template</option>
-                            <option value="funny">Funny Template</option>
+                            <option value="default">🎉 Birthday Wish</option>
+                            <option value="formal">👔 Professional Wish</option>
+                            <option value="friendly">🤗 Casual Wish</option>
+                            <option value="funny">😄 Fun Wish</option>
                         </select>
                     </div>
 
                     <textarea 
                         id="customMessage" 
                         class="message-input"
-                        placeholder="Birthday message..."
+                        placeholder="Type your message..."
                     ></textarea>
 
                     <div class="emoji-toolbar">
-                        <button onclick="birthdayReminder.addEmoji('🎉')">🎉</button>
-                        <button onclick="birthdayReminder.addEmoji('🎂')">🎂</button>
-                        <button onclick="birthdayReminder.addEmoji('✨')">✨</button>
-                        <button onclick="birthdayReminder.addEmoji('🎈')">🎈</button>
+                        <button onclick="birthdayReminder.addEmoji('🎉')">
+                            <img src="party-popper.png" alt="🎉" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('🎂')">
+                            <img src="birthday-cake.png" alt="🎂" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('✨')">
+                            <img src="sparkles.png" alt="✨" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('🎈')">
+                            <img src="balloon.png" alt="🎈" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('🎁')">
+                            <img src="gift.png" alt="🎁" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('🌟')">
+                            <img src="star.png" alt="🌟" width="24">
+                        </button>
+                        <button onclick="birthdayReminder.addEmoji('💝')">
+                            <img src="heart.png" alt="💝" width="24">
+                        </button>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button class="cancel-btn" onclick="birthdayReminder.closeModal()">Cancel</button>
-                    <button class="send-btn" onclick="birthdayReminder.sendMessage('${phone}')">
-                        Send via WhatsApp
-                    </button>
+                    <button class="cancel-btn">Cancel</button>
+                    <button class="send-btn">Send via WhatsApp</button>
                 </div>
             </div>
         `;
@@ -443,17 +455,15 @@ class BirthdayReminder {
         modalContainer.innerHTML = modalContent;
         document.body.appendChild(modalContainer);
 
-        // Initialize with default template
         this.updateTemplate(name);
 
-        // Add touch event handling
-        modalContainer.addEventListener('touchstart', (e) => {
+        // Close modal when clicking outside
+        modalContainer.addEventListener('click', (e) => {
             if (e.target === modalContainer) {
                 this.closeModal();
             }
         });
 
-        // Prevent scroll on modal open
         document.body.style.overflow = 'hidden';
     }
 
