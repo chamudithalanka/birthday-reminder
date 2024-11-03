@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/logo3.png" alt="Birthday Reminder Logo" width="200"/>
+  <img src="images/logo(3).png" alt="Birthday Reminder Logo" width="200"/>
   
   # 🎂 Birthday Reminder App
   
