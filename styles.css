@@ -1249,3 +1249,28 @@ input::placeholder {
         border-color: #64748b;
     }
 }
+
+/* Add touch-specific styles */
+.touch-device .button-group button:active {
+    opacity: 0.7;
+    transform: scale(0.95);
+}
+
+/* Improve mobile button hit areas */
+.button-group button {
+    min-width: 44px; /* Minimum touch target size */
+    min-height: 44px;
+}
+
+/* Improve mobile toast visibility */
+@media (max-width: 768px) {
+    .toastify {
+        max-width: 90vw !important;
+        margin: 0 auto 1rem auto !important;
+    }
+
+    .birthday-toast {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
