@@ -1029,700 +1029,214 @@ input::placeholder {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: 15px;
 }
 
 .modal-content {
     background: white;
     width: 100%;
-    max-width: 500px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-/* Template Selection Buttons */
-.template-buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 15px;
-    background: #f8fafc;
-}
-
-.template-btn {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    color: #64748b;
-}
-
-.template-btn i {
-    font-size: 16px;
-}
-
-.template-btn.active {
-    background: #25D366;
-    border-color: #25D366;
-    color: white;
-    box-shadow: 0 2px 10px rgba(37, 211, 102, 0.2);
-}
-
-.template-btn:hover:not(.active) {
-    border-color: #25D366;
-    color: #25D366;
-    transform: translateY(-2px);
-}
-
-/* Message Editor */
-.message-editor {
-    padding: 20px;
-}
-
-#customMessage {
-    width: 100%;
-    height: 150px;
-    padding: 15px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    resize: vertical;
-    font-size: 15px;
-    line-height: 1.5;
-    transition: border-color 0.2s ease;
-}
-
-#customMessage:focus {
-    outline: none;
-    border-color: #25D366;
-}
-
-/* Emoji Buttons */
-.editor-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.emoji-btn {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.emoji-btn:hover {
-    background: #25D366;
-    border-color: #25D366;
-    transform: scale(1.1);
-}
-
-/* Footer Buttons */
-.modal-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e2e8f0;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-.btn-cancel {
-    padding: 12px 24px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    background: white;
-    color: #64748b;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-cancel:hover {
-    background: #f8fafc;
-    border-color: #64748b;
-    color: #1e293b;
-}
-
-.btn-send {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 12px;
-    background: #25D366;
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(37, 211, 102, 0.2);
-}
-
-.btn-send i {
-    font-size: 18px;
-}
-
-.btn-send:hover {
-    background: #128C7E;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-}
-
-/* Mobile Responsive */
-@media (max-width: 640px) {
-    .template-buttons {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .modal-footer {
-        flex-direction: column;
-    }
-
-    .btn-cancel, .btn-send {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Tablet and Larger */
-@media (min-width: 768px) {
-    .modal-content {
-        max-width: 600px;
-    }
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    .modal-content {
-        background: #1a1a1a;
-    }
-
-    .template-btn {
-        background: #2d2d2d;
-        border-color: #404040;
-        color: #e2e8f0;
-    }
-
-    .template-btn:hover:not(.active) {
-        border-color: #25D366;
-        color: #25D366;
-    }
-
-    #customMessage {
-        background: #2d2d2d;
-        border-color: #404040;
-        color: white;
-    }
-
-    .emoji-btn {
-        background: #2d2d2d;
-        border-color: #404040;
-    }
-
-    .btn-cancel {
-        background: #2d2d2d;
-        border-color: #404040;
-        color: #e2e8f0;
-    }
-
-    .btn-cancel:hover {
-        background: #404040;
-        border-color: #64748b;
-    }
-}
-
-/* Add touch-specific styles */
-.touch-device .button-group button:active {
-    opacity: 0.7;
-    transform: scale(0.95);
-}
-
-/* Improve mobile button hit areas */
-.button-group button {
-    min-width: 44px; /* Minimum touch target size */
-    min-height: 44px;
-}
-
-/* Improve mobile toast visibility */
-@media (max-width: 768px) {
-    .toastify {
-        max-width: 90vw !important;
-        margin: 0 auto 1rem auto !important;
-    }
-
-    .birthday-toast {
-        padding: 1rem !important;
-        margin-bottom: 1rem !important;
-    }
-}
-
-/* Modal styles for mobile */
-.message-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.modal-header {
-    padding: 15px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-body {
-    padding: 15px;
-}
-
-.message-input {
-    width: 100%;
-    min-height: 120px;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-.emoji-toolbar {
-    display: flex;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-.emoji-toolbar button {
-    font-size: 20px;
-    padding: 5px 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-.modal-footer {
-    padding: 15px;
-    border-top: 1px solid #dee2e6;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        margin: 10px;
-    }
-
-    .message-input {
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-
-    .modal-footer button {
-        padding: 12px 20px; /* Larger touch targets */
-    }
-}
-
-/* Modal Styles */
-.message-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: slideUp 0.3s ease;
-}
-
-.modal-header {
-    padding: 20px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-header h3 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 1.3rem;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #666;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.close-btn:hover {
-    background: #f1f1f1;
-    color: #333;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.template-selector {
-    margin-bottom: 15px;
-}
-
-.template-selector select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    background: #f8f9fa;
-    cursor: pointer;
-}
-
-.message-input {
-    width: 100%;
-    min-height: 150px;
-    padding: 15px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    resize: vertical;
-    transition: border-color 0.3s ease;
-}
-
-.message-input:focus {
-    border-color: #4CAF50;
-    outline: none;
-}
-
-.emoji-toolbar {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    overflow-x: auto;
-}
-
-.emoji-toolbar button {
-    font-size: 24px;
-    padding: 8px 12px;
-    border: none;
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.emoji-toolbar button:hover {
-    transform: scale(1.1);
-}
-
-.modal-footer {
-    padding: 20px;
-    border-top: 1px solid #dee2e6;
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-}
-
-.modal-footer button {
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.cancel-btn {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    color: #666;
-}
-
-.cancel-btn:hover {
-    background: #e9ecef;
-}
-
-.send-btn {
-    background: #25D366;
-    border: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.send-btn:hover {
-    background: #128C7E;
-}
-
-.send-btn::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url('whatsapp-icon.png') no-repeat center/contain;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* Mobile Specific Styles */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-    }
-
-    .modal-header h3 {
-        font-size: 1.2rem;
-    }
-
-    .emoji-toolbar button {
-        font-size: 22px;
-        padding: 10px;
-    }
-
-    .modal-footer button {
-        padding: 12px 20px;
-        font-size: 15px;
-    }
-}
-
-/* Active States for Touch Devices */
-@media (hover: none) {
-    .emoji-toolbar button:active {
-        transform: scale(0.95);
-    }
-
-    .modal-footer button:active {
-        opacity: 0.8;
-    }
-}
-
-/* Modal Styles */
-.message-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-    animation: fadeIn 0.2s ease;
-}
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 450px;
+    max-width: 380px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    animation: scaleIn 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
+/* Header Styles */
 .modal-header {
-    padding: 20px;
-    background: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 16px;
     border-bottom: 1px solid #eee;
 }
 
 .modal-header h3 {
-    margin: 0;
+    font-size: 16px;
     color: #1a2b4b;
-    font-size: 1.2rem;
-    font-weight: 600;
+    margin: 0;
+    padding-right: 24px;
 }
 
 .close-btn {
-    background: none;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 24px;
+    height: 24px;
     border: none;
-    font-size: 22px;
+    background: none;
     color: #666;
+    font-size: 20px;
     cursor: pointer;
-    padding: 5px;
-    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.modal-body {
-    padding: 20px;
+/* Template Selection Styles */
+.template-options {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
 }
 
-.template-selector {
-    margin-bottom: 15px;
-}
-
-.template-selector select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    font-size: 14px;
+.template-option {
+    flex: 1;
+    padding: 8px;
+    border-radius: 12px;
     background: #f8f9fa;
+    border: 2px solid transparent;
     cursor: pointer;
+    text-align: center;
+}
+
+.template-option.selected {
+    background: #e8f5e9;
+    border-color: #4CAF50;
+}
+
+.template-option i {
+    font-size: 18px;
+    margin-bottom: 4px;
+    color: #666;
+}
+
+.template-option span {
+    display: block;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Message Input Styles */
+.message-container {
+    padding: 12px;
 }
 
 .message-input {
     width: 100%;
     min-height: 120px;
-    padding: 15px;
-    margin: 10px 0;
-    border: 1px solid #eee;
-    border-radius: 15px;
-    font-size: 15px;
-    resize: none;
+    padding: 12px;
+    border-radius: 12px;
     background: #2d2d2d;
     color: white;
+    border: none;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
 }
 
-.message-input:focus {
-    outline: none;
-    border-color: #25D366;
+/* Emoji Section Styles */
+.emoji-section {
+    padding: 12px;
+    border-top: 1px solid #eee;
+}
+
+.emoji-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.emoji-header span {
+    font-size: 13px;
+    color: #666;
 }
 
 .emoji-toolbar {
     display: flex;
     gap: 8px;
-    margin: 15px 0;
-    padding: 10px 0;
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
+    padding: 4px 0;
+    scrollbar-width: none;
 }
 
 .emoji-toolbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
+    display: none;
 }
 
-.emoji-toolbar button {
-    min-width: 45px;
-    height: 45px;
+.emoji-button {
+    min-width: 36px;
+    height: 36px;
     border: none;
     background: white;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
-.emoji-toolbar button:hover {
-    transform: scale(1.05);
-    background: #f8f9fa;
+.emoji-button:hover {
+    transform: scale(1.1);
 }
 
+/* Footer Styles */
 .modal-footer {
-    padding: 15px 20px;
+    padding: 12px;
+    border-top: 1px solid #eee;
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
+}
+
+.cancel-btn, .send-btn {
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .cancel-btn {
     flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 15px;
-    cursor: pointer;
-    background: white;
-    border: 1px solid #ddd;
+    background: #f5f5f5;
     color: #666;
 }
 
 .send-btn {
     flex: 2;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 15px;
-    cursor: pointer;
     background: #25D366;
-    border: none;
     color: white;
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.send-btn i {
+    font-size: 16px;
 }
 
-@keyframes scaleIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+/* Responsive Adjustments */
+@media (max-width: 380px) {
+    .message-modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        border-radius: 16px;
+    }
+
+    .template-option {
+        padding: 6px;
+    }
+
+    .template-option i {
+        font-size: 16px;
+    }
+
+    .template-option span {
+        font-size: 11px;
+    }
 }
