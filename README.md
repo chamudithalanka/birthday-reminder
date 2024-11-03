@@ -1,13 +1,13 @@
 <div align="center">
-  <img src="path/to/your/logo.png" alt="Birthday Reminder Logo" width="200"/>
+  <img src="images/logo.png" alt="Birthday Reminder Logo" width="200"/>
   
   # 🎂 Birthday Reminder App
   
   A modern WhatsApp birthday reminder application with customizable messages and notifications.
   
-  [![GitHub license](https://img.shields.io/github/license/your-username/your-repo)](https://github.com/your-username/your-repo/blob/main/LICENSE)
-  [![GitHub stars](https://img.shields.io/github/stars/your-username/your-repo)](https://github.com/your-username/your-repo/stargazers)
-  [![GitHub issues](https://img.shields.io/github/issues/your-username/your-repo)](https://github.com/your-username/your-repo/issues)
+  [![GitHub license](https://img.shields.io/github/license/chamudithalanka/birthday-reminder)](https://github.com/chamudithalanka/birthday-reminder/blob/main/LICENSE)
+  [![GitHub stars](https://img.shields.io/github/stars/chamudithalanka/birthday-reminder)](https://github.com/chamudithalanka/birthday-reminder/stargazers)
+  [![GitHub issues](https://img.shields.io/github/issues/chamudithalanka/birthday-reminder)](https://github.com/chamudithalanka/birthday-reminder/issues)
 </div>
 
 ## ✨ Features
@@ -22,8 +22,8 @@
 ## 🖥️ Screenshots
 
 <div align="center">
-  <img src="path/to/screenshot1.png" alt="Screenshot 1" width="300"/>
-  <img src="path/to/screenshot2.png" alt="Screenshot 2" width="300"/>
+  <img src="images/ss001.jpg" alt="Screenshot 1" width="300"/>
+  <img src="images/ss2.jpg" alt="Screenshot 2" width="300"/>
 </div>
 
 ## 🚀 Getting Started
@@ -35,4 +35,4 @@
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository: 
