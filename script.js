@@ -12,10 +12,24 @@ class BirthdayReminder {
     }
 
     init() {
-        // Request notification permission
-        if ("Notification" in window) {
-            Notification.requestPermission();
+        // Update notification permission request
+        if ("Notification" in window && "serviceWorker" in navigator) {
+            // Register service worker
+            navigator.serviceWorker.register('service-worker.js')
+                .then((registration) => {
+                    console.log('ServiceWorker registered');
+                    Notification.requestPermission();
+                })
+                .catch((err) => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
         }
+
+        // Update button event listeners to be mobile-friendly
+        document.addEventListener('touchstart', () => {
+            // Enable :active states on iOS
+            document.body.classList.add('touch-device');
+        });
 
         // Add event listeners
         document.getElementById('birthdayForm').addEventListener('submit', (e) => {
@@ -144,6 +158,33 @@ class BirthdayReminder {
                     </button>
                 </div>
             `;
+
+            // Update button event listeners
+            const editBtn = li.querySelector('.btn-edit');
+            const whatsappBtn = li.querySelector('.btn-whatsapp');
+            const deleteBtn = li.querySelector('.btn-delete');
+
+            // Add both click and touch events
+            ['click', 'touchend'].forEach(eventType => {
+                editBtn.addEventListener(eventType, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.editBirthday(index);
+                });
+
+                whatsappBtn.addEventListener(eventType, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.sendWhatsAppWish(index);
+                });
+
+                deleteBtn.addEventListener(eventType, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.removeBirthday(index);
+                });
+            });
+
             birthdayList.appendChild(li);
         });
     }
@@ -238,12 +279,18 @@ class BirthdayReminder {
         Toastify({
             text: message,
             duration: 3000,
-            gravity: "top",
-            position: "right",
+            gravity: "bottom", // Changed to bottom for mobile
+            position: "center", // Changed to center for mobile
             style: {
                 background: type === 'error' ? "#ff4444" : 
-                           type === 'info' ? "#4CAF50" : "#2196F3"
-            }
+                           type === 'info' ? "#4CAF50" : "#2196F3",
+                borderRadius: '12px',
+                padding: '1rem',
+                fontSize: '14px',
+                maxWidth: '90vw',
+                margin: '0 auto 1rem auto'
+            },
+            onClick: function(){} // Closes on click
         }).showToast();
     }
 
