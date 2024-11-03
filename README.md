@@ -27,7 +27,7 @@
   
   <!-- Add video below the image -->
   <video width="300" controls>
-    <source src="images/demo.mp4" type="video/mp4">
+    <source src="images/tutorial.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 </div>
