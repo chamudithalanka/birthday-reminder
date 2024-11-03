@@ -24,6 +24,12 @@
 <div align="center">
   <img src="images/ss001.jpg" alt="Screenshot 1" width="300"/>
   <img src="images/ss25.jpg" alt="Screenshot 2" width="300"/>
+  
+  <!-- Add video below the image -->
+  <video width="300" controls>
+    <source src="images/demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 ## 🚀 Getting Started
