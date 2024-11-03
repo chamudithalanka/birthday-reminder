@@ -1357,3 +1357,372 @@ input::placeholder {
         padding: 12px 20px; /* Larger touch targets */
     }
 }
+
+/* Modal Styles */
+.message-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    padding: 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.3rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: #f1f1f1;
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.template-selector {
+    margin-bottom: 15px;
+}
+
+.template-selector select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f8f9fa;
+    cursor: pointer;
+}
+
+.message-input {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.message-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.emoji-toolbar {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.emoji-toolbar button {
+    font-size: 24px;
+    padding: 8px 12px;
+    border: none;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.emoji-toolbar button:hover {
+    transform: scale(1.1);
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.modal-footer button {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    background: #e9ecef;
+}
+
+.send-btn {
+    background: #25D366;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.send-btn:hover {
+    background: #128C7E;
+}
+
+.send-btn::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('whatsapp-icon.png') no-repeat center/contain;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Mobile Specific Styles */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+    }
+
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .emoji-toolbar button {
+        font-size: 22px;
+        padding: 10px;
+    }
+
+    .modal-footer button {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
+/* Active States for Touch Devices */
+@media (hover: none) {
+    .emoji-toolbar button:active {
+        transform: scale(0.95);
+    }
+
+    .modal-footer button:active {
+        opacity: 0.8;
+    }
+}
+
+/* Modal Styles */
+.message-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: scaleIn 0.2s ease;
+}
+
+.modal-header {
+    padding: 20px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #1a2b4b;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    opacity: 0.7;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.template-selector {
+    margin-bottom: 15px;
+}
+
+.template-selector select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #f8f9fa;
+    cursor: pointer;
+}
+
+.message-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    font-size: 15px;
+    resize: none;
+    background: #2d2d2d;
+    color: white;
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: #25D366;
+}
+
+.emoji-toolbar {
+    display: flex;
+    gap: 8px;
+    margin: 15px 0;
+    padding: 10px 0;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+.emoji-toolbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+.emoji-toolbar button {
+    min-width: 45px;
+    height: 45px;
+    border: none;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.emoji-toolbar button:hover {
+    transform: scale(1.05);
+    background: #f8f9fa;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.cancel-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background: white;
+    border: 1px solid #ddd;
+    color: #666;
+}
+
+.send-btn {
+    flex: 2;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background: #25D366;
+    border: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
