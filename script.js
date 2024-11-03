@@ -12,17 +12,20 @@ class BirthdayReminder {
     }
 
     init() {
-        // Update notification permission request
-        if ("Notification" in window && "serviceWorker" in navigator) {
-            // Register service worker
-            navigator.serviceWorker.register('service-worker.js')
-                .then((registration) => {
-                    console.log('ServiceWorker registered');
-                    Notification.requestPermission();
-                })
-                .catch((err) => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+        // Update notification handling
+        if ("Notification" in window) {
+            // First, try requesting permission immediately
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    this.initializeNotifications();
+                }
+            });
+
+            // Add a test notification button (temporary, for testing)
+            const testBtn = document.createElement('button');
+            testBtn.innerHTML = 'Test Notification';
+            testBtn.onclick = () => this.testNotification();
+            document.body.appendChild(testBtn);
         }
 
         // Update button event listeners to be mobile-friendly
@@ -48,6 +51,30 @@ class BirthdayReminder {
         // Check for birthdays daily
         this.checkBirthdays();
         setInterval(() => this.checkBirthdays(), 24 * 60 * 60 * 1000);
+    }
+
+    initializeNotifications() {
+        // Register service worker for notifications
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful');
+                    
+                    // Test notification after registration
+                    this.showTestNotification(registration);
+                })
+                .catch(err => {
+                    console.error('ServiceWorker registration failed:', err);
+                });
+        }
+    }
+
+    showTestNotification(registration) {
+        registration.showNotification('Birthday Reminder Test', {
+            body: 'Notification system is working! 🎉',
+            icon: 'cake-icon.png',
+            vibrate: [200, 100, 200]
+        });
     }
 
     addBirthday() {
@@ -228,12 +255,33 @@ class BirthdayReminder {
     }
 
     showBirthdayNotification(birthday) {
+        if (!("Notification" in window)) {
+            console.log("This browser does not support notifications");
+            return;
+        }
+
         if (Notification.permission === "granted") {
-            new Notification("Birthday Today! 🎂", {
-                body: `Today is ${birthday.name}'s birthday! Send them a wish!`,
-                icon: 'cake-icon.png',
-                silent: true
-            });
+            try {
+                // Try both methods
+                if ('serviceWorker' in navigator && navigator.serviceWorker.ready) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification("Birthday Today! 🎂", {
+                            body: `Today is ${birthday.name}'s birthday!`,
+                            icon: 'cake-icon.png',
+                            vibrate: [200, 100, 200],
+                            requireInteraction: true
+                        });
+                    });
+                } else {
+                    // Fallback to regular notification
+                    new Notification("Birthday Today! 🎂", {
+                        body: `Today is ${birthday.name}'s birthday!`,
+                        icon: 'cake-icon.png'
+                    });
+                }
+            } catch (error) {
+                console.error("Notification error:", error);
+            }
         }
     }
 
@@ -336,112 +384,83 @@ class BirthdayReminder {
     }
 
     showSendMessageModal(name, phone) {
-        const modal = document.createElement('div');
-        modal.className = 'message-modal';
-        modal.innerHTML = `
+        // Remove any existing modal first
+        this.closeModal();
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'message-modal';
+        
+        // Create modal content with simplified structure
+        const modalContent = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="header-content">
-                        <div class="profile-circle">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="header-text">
-                            <h3>Send Wish to ${name}</h3>
-                            <span class="phone-number">
-                                <i class="fab fa-whatsapp"></i> ${phone}
-                            </span>
-                        </div>
-                    </div>
+                    <h3>Send Wish to ${name}</h3>
+                    <button class="close-btn" onclick="birthdayReminder.closeModal()">×</button>
                 </div>
                 
                 <div class="modal-body">
-                    <div class="template-buttons">
-                        <button class="template-btn active" data-template="default" onclick="birthdayReminder.switchTemplate('default', '${name}')">
-                            <i class="fas fa-star"></i>
-                            <span>Default</span>
-                        </button>
-                        <button class="template-btn" data-template="formal" onclick="birthdayReminder.switchTemplate('formal', '${name}')">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Formal</span>
-                        </button>
-                        <button class="template-btn" data-template="friendly" onclick="birthdayReminder.switchTemplate('friendly', '${name}')">
-                            <i class="fas fa-heart"></i>
-                            <span>Friendly</span>
-                        </button>
-                        <button class="template-btn" data-template="funny" onclick="birthdayReminder.switchTemplate('funny', '${name}')">
-                            <i class="fas fa-laugh"></i>
-                            <span>Funny</span>
-                        </button>
+                    <div class="template-selector">
+                        <select id="messageTemplate" onchange="birthdayReminder.updateTemplate('${name}')">
+                            <option value="default">Default Template</option>
+                            <option value="formal">Formal Template</option>
+                            <option value="friendly">Friendly Template</option>
+                            <option value="funny">Funny Template</option>
+                        </select>
                     </div>
 
-                    <div class="message-editor">
-                        <label>
-                            <i class="fas fa-edit"></i>
-                            Customize Message
-                        </label>
-                        <textarea 
-                            id="customMessage" 
-                            placeholder="Type your birthday wish here..."
-                        ></textarea>
-                        <div class="editor-tools">
-                            <button onclick="birthdayReminder.addEmoji('🎉')" class="emoji-btn">🎉</button>
-                            <button onclick="birthdayReminder.addEmoji('🎂')" class="emoji-btn">🎂</button>
-                            <button onclick="birthdayReminder.addEmoji('✨')" class="emoji-btn">✨</button>
-                            <button onclick="birthdayReminder.addEmoji('🎈')" class="emoji-btn">🎈</button>
-                            <button onclick="birthdayReminder.addEmoji('🎁')" class="emoji-btn">🎁</button>
-                        </div>
+                    <textarea 
+                        id="customMessage" 
+                        class="message-input"
+                        placeholder="Birthday message..."
+                    ></textarea>
+
+                    <div class="emoji-toolbar">
+                        <button onclick="birthdayReminder.addEmoji('🎉')">🎉</button>
+                        <button onclick="birthdayReminder.addEmoji('🎂')">🎂</button>
+                        <button onclick="birthdayReminder.addEmoji('✨')">✨</button>
+                        <button onclick="birthdayReminder.addEmoji('🎈')">🎈</button>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn-cancel" onclick="birthdayReminder.closeModal()">
-                        Cancel
-                    </button>
-                    <button class="btn-send" onclick="birthdayReminder.sendMessage('${phone}')">
-                        <i class="fab fa-whatsapp"></i> Send Wish
+                    <button class="cancel-btn" onclick="birthdayReminder.closeModal()">Cancel</button>
+                    <button class="send-btn" onclick="birthdayReminder.sendMessage('${phone}')">
+                        Send via WhatsApp
                     </button>
                 </div>
             </div>
         `;
-        document.body.appendChild(modal);
-        
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
+
+        modalContainer.innerHTML = modalContent;
+        document.body.appendChild(modalContainer);
+
+        // Initialize with default template
+        this.updateTemplate(name);
+
+        // Add touch event handling
+        modalContainer.addEventListener('touchstart', (e) => {
+            if (e.target === modalContainer) {
                 this.closeModal();
             }
         });
 
-        // Initialize with default template
-        this.switchTemplate('default', name);
+        // Prevent scroll on modal open
+        document.body.style.overflow = 'hidden';
     }
 
-    switchTemplate(templateName, name) {
-        // Update active button
-        const buttons = document.querySelectorAll('.template-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.template === templateName) {
-                btn.classList.add('active');
-            }
-        });
-
-        // Update message text
-        const message = this.messageTemplates[templateName].replace('{name}', name);
+    updateTemplate(name) {
+        const select = document.getElementById('messageTemplate');
+        const template = this.messageTemplates[select.value];
+        const message = template.replace('{name}', name);
         document.getElementById('customMessage').value = message;
-    }
-
-    sendMessage(phone) {
-        const message = document.getElementById('customMessage').value;
-        const whatsappURL = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappURL, '_blank');
-        this.closeModal();
     }
 
     closeModal() {
         const modal = document.querySelector('.message-modal');
         if (modal) {
             modal.remove();
+            document.body.style.overflow = 'auto';
         }
     }
 
