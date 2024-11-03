@@ -14,18 +14,12 @@ class BirthdayReminder {
     init() {
         // Update notification handling
         if ("Notification" in window) {
-            // First, try requesting permission immediately
+            // Request notification permission
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
                     this.initializeNotifications();
                 }
             });
-
-            // Add a test notification button (temporary, for testing)
-            const testBtn = document.createElement('button');
-            testBtn.innerHTML = 'Test Notification';
-            testBtn.onclick = () => this.testNotification();
-            document.body.appendChild(testBtn);
         }
 
         // Update button event listeners to be mobile-friendly
@@ -344,19 +338,33 @@ class BirthdayReminder {
 
     testNotification() {
         if (Notification.permission === "granted") {
-            new Notification("Birthday Reminder Test", {
-                body: "Notifications are working perfectly! 🎉",
-                icon: 'cake-icon.png', // if you have an icon
-                badge: 'badge-icon.png', // if you have a badge icon
-                silent: true // This makes the notification silent
-            });
+            if ('serviceWorker' in navigator && navigator.serviceWorker.ready) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.showNotification("Birthday Reminder Test", {
+                        body: "Notifications are working perfectly! 🎉",
+                        icon: 'cake-icon.png',
+                        badge: 'badge-icon.png',
+                        vibrate: [200, 100, 200],
+                        requireInteraction: true
+                    });
+                });
+            } else {
+                // Fallback to regular notification
+                new Notification("Birthday Reminder Test", {
+                    body: "Notifications are working perfectly! 🎉",
+                    icon: 'cake-icon.png',
+                    badge: 'badge-icon.png'
+                });
+            }
             
             // Animate the button when notification is sent
-            const button = document.querySelector('.button-content');
-            button.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                button.style.transform = 'scale(1)';
-            }, 200);
+            const button = document.querySelector('.notification-test-btn');
+            if (button) {
+                button.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
+            }
         } else if (Notification.permission !== "denied") {
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
