@@ -401,53 +401,56 @@ class BirthdayReminder {
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Send Birthday Wish to ${name}</h3>
-                    <button class="close-btn" onclick="birthdayReminder.closeModal()">×</button>
+                    <button class="close-btn">×</button>
                 </div>
                 
-                <div class="modal-body">
-                    <div class="template-selector">
-                        <select id="messageTemplate" onchange="birthdayReminder.updateTemplate('${name}')">
-                            <option value="default">🎉 Birthday Wish</option>
-                            <option value="formal">👔 Professional Wish</option>
-                            <option value="friendly">🤗 Casual Wish</option>
-                            <option value="funny">😄 Fun Wish</option>
-                        </select>
+                <div class="template-options">
+                    <div class="template-option selected" data-template="default">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span>Birthday</span>
                     </div>
+                    <div class="template-option" data-template="formal">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Formal</span>
+                    </div>
+                    <div class="template-option" data-template="friendly">
+                        <i class="fas fa-heart"></i>
+                        <span>Friendly</span>
+                    </div>
+                    <div class="template-option" data-template="funny">
+                        <i class="fas fa-laugh"></i>
+                        <span>Funny</span>
+                    </div>
+                </div>
 
+                <div class="message-container">
                     <textarea 
                         id="customMessage" 
                         class="message-input"
                         placeholder="Type your message..."
                     ></textarea>
+                </div>
 
+                <div class="emoji-section">
+                    <div class="emoji-header">
+                        <span>Quick Emojis</span>
+                    </div>
                     <div class="emoji-toolbar">
-                        <button onclick="birthdayReminder.addEmoji('🎉')">
-                            <img src="party-popper.png" alt="🎉" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('🎂')">
-                            <img src="birthday-cake.png" alt="🎂" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('✨')">
-                            <img src="sparkles.png" alt="✨" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('🎈')">
-                            <img src="balloon.png" alt="🎈" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('🎁')">
-                            <img src="gift.png" alt="🎁" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('🌟')">
-                            <img src="star.png" alt="🌟" width="24">
-                        </button>
-                        <button onclick="birthdayReminder.addEmoji('💝')">
-                            <img src="heart.png" alt="💝" width="24">
-                        </button>
+                        <button class="emoji-button" data-emoji="🎉">🎉</button>
+                        <button class="emoji-button" data-emoji="🎂">🎂</button>
+                        <button class="emoji-button" data-emoji="✨">✨</button>
+                        <button class="emoji-button" data-emoji="🎈">🎈</button>
+                        <button class="emoji-button" data-emoji="🎁">🎁</button>
+                        <button class="emoji-button" data-emoji="🌟">🌟</button>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button class="cancel-btn">Cancel</button>
-                    <button class="send-btn">Send via WhatsApp</button>
+                    <button class="send-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        Send via WhatsApp
+                    </button>
                 </div>
             </div>
         `;
@@ -455,23 +458,130 @@ class BirthdayReminder {
         modalContainer.innerHTML = modalContent;
         document.body.appendChild(modalContainer);
 
-        this.updateTemplate(name);
+        this.initializeModalEvents(modalContainer);
+        this.selectTemplate('default', name);
+    }
 
-        // Close modal when clicking outside
-        modalContainer.addEventListener('click', (e) => {
-            if (e.target === modalContainer) {
-                this.closeModal();
-            }
+    // New methods for enhanced functionality
+    selectTemplate(type, name) {
+        const templates = document.querySelectorAll('.template-card');
+        templates.forEach(temp => temp.classList.remove('selected'));
+        
+        const selectedTemplate = document.querySelector(`.template-card:nth-child(${
+            type === 'default' ? 1 : 
+            type === 'formal' ? 2 : 
+            type === 'friendly' ? 3 : 4
+        })`);
+        
+        if (selectedTemplate) {
+            selectedTemplate.classList.add('selected');
+        }
+
+        const message = this.messageTemplates[type].replace('{name}', name);
+        const textarea = document.getElementById('customMessage');
+        textarea.value = message;
+        this.adjustTextareaHeight(textarea);
+    }
+
+    scrollEmojis(direction) {
+        const toolbar = document.getElementById('emojiToolbar');
+        const scrollAmount = 100;
+        
+        if (direction === 'left') {
+            toolbar.scrollBy(-scrollAmount, 0);
+        } else {
+            toolbar.scrollBy(scrollAmount, 0);
+        }
+    }
+
+    adjustTextareaHeight(textarea) {
+        textarea.style.height = '';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    initializeModalEvents(modalContainer) {
+        // Close button event
+        const closeBtn = modalContainer.querySelector('.close-btn');
+        closeBtn.addEventListener('click', () => this.closeModal());
+
+        // Template switching
+        const templateOptions = modalContainer.querySelectorAll('.template-option');
+        templateOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const template = option.dataset.template;
+                const name = modalContainer.querySelector('.modal-header h3').textContent.split(' ').pop();
+                
+                // Remove selected class from all options
+                templateOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                
+                // Update message
+                this.updateTemplate(template, name);
+            });
         });
 
+        // Emoji buttons
+        const emojiButtons = modalContainer.querySelectorAll('.emoji-button');
+        emojiButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const emoji = button.dataset.emoji;
+                this.addEmoji(emoji);
+            });
+        });
+
+        // Cancel button
+        const cancelBtn = modalContainer.querySelector('.cancel-btn');
+        cancelBtn.addEventListener('click', () => this.closeModal());
+
+        // Send WhatsApp button
+        const sendBtn = modalContainer.querySelector('.send-btn');
+        sendBtn.addEventListener('click', () => {
+            const message = document.getElementById('customMessage').value;
+            const phone = sendBtn.dataset.phone;
+            this.sendWhatsAppMessage(message, phone);
+        });
+
+        // Prevent body scroll when modal is open
         document.body.style.overflow = 'hidden';
     }
 
-    updateTemplate(name) {
-        const select = document.getElementById('messageTemplate');
-        const template = this.messageTemplates[select.value];
-        const message = template.replace('{name}', name);
-        document.getElementById('customMessage').value = message;
+    updateTemplate(template, name) {
+        const textarea = document.getElementById('customMessage');
+        const message = this.messageTemplates[template].replace('{name}', name);
+        textarea.value = message;
+    }
+
+    addEmoji(emoji) {
+        const textarea = document.getElementById('customMessage');
+        if (textarea) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const before = text.substring(0, start);
+            const after = text.substring(end);
+            
+            textarea.value = before + emoji + after;
+            // Set cursor position after emoji
+            textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+            textarea.focus();
+        }
+    }
+
+    sendWhatsAppMessage(message, phone) {
+        if (!message || !phone) return;
+        
+        // Clean the phone number
+        const cleanPhone = phone.replace(/[^0-9]/g, '');
+        
+        // Create WhatsApp URL
+        const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp in new tab
+        window.open(whatsappUrl, '_blank');
+        
+        // Close the modal
+        this.closeModal();
     }
 
     closeModal() {
@@ -495,19 +605,6 @@ class BirthdayReminder {
                 this.showWhatsAppReminder(birthday);
             }
         });
-    }
-
-    // Add new method for emoji insertion
-    addEmoji(emoji) {
-        const textarea = document.getElementById('customMessage');
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const text = textarea.value;
-        const before = text.substring(0, start);
-        const after = text.substring(end);
-        textarea.value = before + emoji + after;
-        textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
-        textarea.focus();
     }
 }
 
